@@ -56,7 +56,7 @@ func SignRawTransactionHash(txHash string, prikey []byte) ([]byte, error) {
 		return nil, errors.New("Invalid private key data!")
 	}
 
-	sig, retCode := owcrypt.Signature(prikey, nil, 0, hash, 32, owcrypt.ECC_CURVE_SECP256K1)
+	sig, _, retCode := owcrypt.Signature(prikey, nil, hash,  owcrypt.ECC_CURVE_SECP256K1)
 	if retCode != owcrypt.SUCCESS {
 		return nil, errors.New("Sign failed!")
 	}
@@ -87,7 +87,7 @@ func CombineAndVerifyRawTransaction(emptyTrans string, hashs []TxHash) (string, 
 		}
 		hashBytes, _ := hex.DecodeString(hash.Hash)
 		pubkey := owcrypt.PointDecompress(hashs[i].PublicKey, owcrypt.ECC_CURVE_SECP256K1)[1:]
-		if owcrypt.SUCCESS != owcrypt.Verify(pubkey, nil, 0, hashBytes, 32, hashs[i].Signature, owcrypt.ECC_CURVE_SECP256K1) {
+		if owcrypt.SUCCESS != owcrypt.Verify(pubkey, nil,  hashBytes,  hashs[i].Signature, owcrypt.ECC_CURVE_SECP256K1) {
 			return "", false
 		}
 	}
