@@ -1,9 +1,9 @@
 package openwtester
 
 import (
-	"github.com/blocktree/openwallet/log"
-	"github.com/blocktree/openwallet/openw"
-	"github.com/blocktree/openwallet/openwallet"
+	"github.com/blocktree/openwallet/v2/log"
+	"github.com/blocktree/openwallet/v2/openw"
+	"github.com/blocktree/openwallet/v2/openwallet"
 	"path/filepath"
 	"testing"
 )
@@ -11,8 +11,8 @@ import (
 var (
 	testApp        = "handshake-adapter"
 	configFilePath = filepath.Join("conf")
-	dbFilePath = filepath.Join("data", "db")
-	dbFileName = "blockchain.db"
+	dbFilePath     = filepath.Join("data", "db")
+	dbFileName     = "blockchain.db"
 )
 
 func testInitWalletManager() *openw.WalletManager {
@@ -143,6 +143,7 @@ func TestWalletManager_GetAddressList(t *testing.T) {
 
 	tm.CloseDB(testApp)
 }
+
 /*
 
 hs1qvmxvgm93n6gz2qlmfu3ryj9ta6vku78gpkk22l

@@ -20,7 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
-	"github.com/blocktree/openwallet/openwallet"
+	"github.com/blocktree/openwallet/v2/openwallet"
 	"github.com/shopspring/decimal"
 	"sort"
 	"strings"
@@ -65,7 +65,7 @@ func (decoder *TransactionDecoder) CreateSummaryRawTransaction(wrapper openwalle
 		err               error
 	)
 
-		rawTxWithErrArray, err = decoder.CreateHNSSummaryRawTransaction(wrapper, sumRawTx)
+	rawTxWithErrArray, err = decoder.CreateHNSSummaryRawTransaction(wrapper, sumRawTx)
 
 	if err != nil {
 		return nil, err
@@ -363,7 +363,7 @@ func (decoder *TransactionDecoder) VerifyHNSRawTransaction(wrapper openwallet.Wa
 	var (
 		emptyTrans = rawTx.RawHex
 		//sigPub     = make([]btcTransaction.SignaturePubkey, 0)
-		transHash     = make([]handshakeTransaction.TxHash, 0)
+		transHash = make([]handshakeTransaction.TxHash, 0)
 	)
 
 	if rawTx.Signatures == nil || len(rawTx.Signatures) == 0 {
@@ -381,10 +381,10 @@ func (decoder *TransactionDecoder) VerifyHNSRawTransaction(wrapper openwallet.Wa
 			pubkey, _ := hex.DecodeString(keySignature.Address.PublicKey)
 
 			txHash := handshakeTransaction.TxHash{
-				Hash: keySignature.Message,
-				Address:keySignature.Address.Address,
-				Signature:signature,
-				PublicKey:pubkey,
+				Hash:      keySignature.Message,
+				Address:   keySignature.Address.Address,
+				Signature: signature,
+				PublicKey: pubkey,
 			}
 
 			transHash = append(transHash, txHash)
@@ -630,7 +630,7 @@ func (decoder *TransactionDecoder) createHNSRawTransaction(
 
 	//装配输入
 	for _, utxo := range usedUTXO {
-		amount,_ := decimal.NewFromString(utxo.Amount)
+		amount, _ := decimal.NewFromString(utxo.Amount)
 		//amount = amount.Round(decoder.wm.Decimal())
 		amount = amount.Mul(decimal.New(1000000, 0))
 		in := handshakeTransaction.Vin{

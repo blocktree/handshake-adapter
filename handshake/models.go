@@ -19,7 +19,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
-	"github.com/blocktree/openwallet/openwallet"
+	"github.com/blocktree/openwallet/v2/openwallet"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/shopspring/decimal"
 	"github.com/tidwall/gjson"
@@ -508,7 +508,7 @@ func (c Client) newTx(json *gjson.Result) (*Transaction, error) {
 			if vin.Get("coinbase").String() == "true" {
 				break
 			}
-			input,err := c.newTxVin(&vin)
+			input, err := c.newTxVin(&vin)
 			if err != nil {
 				return &Transaction{}, err
 			}
@@ -533,8 +533,6 @@ func (c Client) newTx(json *gjson.Result) (*Transaction, error) {
 
 	return &obj, nil
 }
-
-
 
 func (c Client) newTxVin(json *gjson.Result) (*Vin, error) {
 	/*
@@ -597,4 +595,3 @@ func newTxVout(json *gjson.Result) (*Vout, error) {
 
 	return &obj, nil
 }
-

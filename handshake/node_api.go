@@ -21,7 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
-	"github.com/blocktree/openwallet/log"
+	"github.com/blocktree/openwallet/v2/log"
 	"github.com/imroc/req"
 	"github.com/shopspring/decimal"
 	"github.com/tidwall/gjson"
@@ -50,7 +50,6 @@ type Response struct {
 	Message string      `json:"message,omitempty"`
 	Id      string      `json:"id,omitempty"`
 }
-
 
 func NewClient(url, token string, debug bool) *Client {
 	c := Client{
@@ -93,8 +92,8 @@ func (c *Client) Call(path string, request []interface{}) (*gjson.Result, error)
 		log.Std.Info("Start Request API...")
 	}
 
-	if request == nil && path != "getblockcount"{
-		r, err := c.client.Get(c.BaseURL + path, nil, authHeader)
+	if request == nil && path != "getblockcount" {
+		r, err := c.client.Get(c.BaseURL+path, nil, authHeader)
 		if c.Debug {
 			log.Std.Info("Request API Completed")
 		}
@@ -176,8 +175,6 @@ func isError(result *gjson.Result) error {
 		return nil
 	}
 
-
-
 	errInfo := fmt.Sprintf("[%d]%s",
 		result.Get("error.code").Int(),
 		result.Get("error.message").String())
@@ -204,7 +201,7 @@ func (c Client) getBlockHeight() (uint64, error) {
 
 }
 
-func (c Client) getBlockHash(height uint64) (string, error){
+func (c Client) getBlockHash(height uint64) (string, error) {
 	request := []interface{}{
 		height,
 	}
@@ -223,7 +220,7 @@ func (c Client) getBlockHash(height uint64) (string, error){
 	return result.String(), nil
 }
 
-func (c Client) getBlock (hash string) (*Block, error) {
+func (c Client) getBlock(hash string) (*Block, error) {
 	request := []interface{}{
 		hash,
 		1,
@@ -284,7 +281,7 @@ func (c Client) getTransaction(txid string) (*Transaction, error) {
 	return c.newTx(result)
 }
 
-func (c Client) getAddressAndAmoutOfInput(txid string, vout uint64) (string, string, error)  {
+func (c Client) getAddressAndAmoutOfInput(txid string, vout uint64) (string, string, error) {
 	request := []interface{}{
 		txid,
 		1,
@@ -308,7 +305,7 @@ func (c Client) getAddressAndAmoutOfInput(txid string, vout uint64) (string, str
 
 	hashStr := outs[int(vout)].Get("address").Get("hash").String()
 	hash, _ := hex.DecodeString(hashStr)
-	if outs[int(vout)].Get("address").Get("version").Uint() != 0 ||  err != nil{
+	if outs[int(vout)].Get("address").Get("version").Uint() != 0 || err != nil {
 		return "", "", errors.New("unknown address version")
 	}
 
@@ -339,7 +336,7 @@ func (c Client) getVout(txid string, vout uint64) (*Vout, error) {
 
 	hashStr := outs[int(vout)].Get("address").Get("hash").String()
 	hash, _ := hex.DecodeString(hashStr)
-	if outs[int(vout)].Get("address").Get("version").Uint() != 0 || err != nil{
+	if outs[int(vout)].Get("address").Get("version").Uint() != 0 || err != nil {
 		return nil, errors.New("unknown address version")
 	}
 
@@ -359,7 +356,7 @@ func (c Client) listUnspend(addresses ...string) ([]*Unspent, error) {
 		utxos = make([]*Unspent, 0)
 	)
 	for _, address := range addresses {
-		path := "/coin/address/"+address
+		path := "/coin/address/" + address
 
 		result, err := c.Call(path, nil)
 		if err != nil {
@@ -384,7 +381,7 @@ func (c Client) listUnspend(addresses ...string) ([]*Unspent, error) {
 	return utxos, nil
 }
 
-func (c Client) getEstimateFeeRate () (decimal.Decimal, error) {
+func (c Client) getEstimateFeeRate() (decimal.Decimal, error) {
 	request := []interface{}{
 		10,
 	}
@@ -392,10 +389,10 @@ func (c Client) getEstimateFeeRate () (decimal.Decimal, error) {
 	if err != nil {
 		return decimal.Decimal{}, err
 	}
-	return  decimal.NewFromString(result.Get("fee").String())
+	return decimal.NewFromString(result.Get("fee").String())
 }
 
-func (c Client) sendTransaction(rawHex string) (string, error)  {
+func (c Client) sendTransaction(rawHex string) (string, error) {
 	request := []interface{}{
 		rawHex,
 	}

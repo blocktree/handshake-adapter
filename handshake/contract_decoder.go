@@ -1,6 +1,6 @@
 package handshake
 
-import "github.com/blocktree/openwallet/openwallet"
+import "github.com/blocktree/openwallet/v2/openwallet"
 
 type ContractDecoder struct {
 	*openwallet.SmartContractDecoderBase

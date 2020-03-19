@@ -23,8 +23,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/blocktree/openwallet/common"
-	"github.com/blocktree/openwallet/openwallet"
+	"github.com/blocktree/openwallet/v2/common"
+	"github.com/blocktree/openwallet/v2/openwallet"
 	"github.com/graarh/golang-socketio"
 	"github.com/graarh/golang-socketio/transport"
 	"github.com/shopspring/decimal"
@@ -59,11 +59,11 @@ type HNSBlockScanner struct {
 
 //ExtractResult 扫描完成的提取结果
 type ExtractResult struct {
-	extractData     map[string]*openwallet.TxExtractData
+	extractData map[string]*openwallet.TxExtractData
 	//extractOmniData map[string]*openwallet.TxExtractData //代币交易
-	TxID            string
-	BlockHeight     uint64
-	Success         bool
+	TxID        string
+	BlockHeight uint64
+	Success     bool
 	//IsOmniTransfer  bool
 }
 
@@ -563,12 +563,11 @@ func (bs *HNSBlockScanner) ExtractTransaction(blockHeight uint64, blockHash stri
 
 	var (
 		result = ExtractResult{
-			BlockHeight:     blockHeight,
-			TxID:            txid,
-			extractData:     make(map[string]*openwallet.TxExtractData),
-		//	extractOmniData: make(map[string]*openwallet.TxExtractData),
+			BlockHeight: blockHeight,
+			TxID:        txid,
+			extractData: make(map[string]*openwallet.TxExtractData),
+			//	extractOmniData: make(map[string]*openwallet.TxExtractData),
 		}
-
 	)
 
 	//bs.wm.Log.Std.Debug("block scanner scanning tx: %s ...", txid)
@@ -1171,7 +1170,7 @@ func (bs *HNSBlockScanner) SaveLocalBlock(block *Block) error {
 
 //GetBlockHash 根据区块高度获得区块hash
 func (wm *WalletManager) GetBlockHash(height uint64) (string, error) {
-	return  wm.NodeClient.getBlockHash(height)
+	return wm.NodeClient.getBlockHash(height)
 }
 
 //GetLocalBlock 获取本地区块数据
@@ -1198,7 +1197,6 @@ func (bs *HNSBlockScanner) GetLocalBlock(height uint64) (*Block, error) {
 func (wm *WalletManager) GetBlock(hash string) (*Block, error) {
 	return wm.NodeClient.getBlock(hash)
 }
-
 
 //GetTxIDsInMemPool 获取待处理的交易池中的交易单IDs
 func (wm *WalletManager) GetTxIDsInMemPool() ([]string, error) {
@@ -1545,7 +1543,6 @@ func (bs *HNSBlockScanner) setupSocketIO() error {
 
 	return nil
 }
-
 
 //SupportBlockchainDAI 支持外部设置区块链数据访问接口
 //@optional

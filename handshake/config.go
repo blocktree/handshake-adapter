@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/blocktree/go-owcrypt"
-	"github.com/blocktree/openwallet/common/file"
+	"github.com/blocktree/openwallet/v2/common/file"
 	"github.com/shopspring/decimal"
 )
 
@@ -101,7 +101,6 @@ type WalletConfig struct {
 	MinFeeRate decimal.Decimal
 	//数据目录
 	DataDir string
-
 }
 
 func NewConfig(symbol string, curveType uint32, decimals int32) *WalletConfig {

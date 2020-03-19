@@ -18,7 +18,7 @@ package handshake
 import (
 	"github.com/blocktree/go-owcrypt"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
-	"github.com/blocktree/openwallet/openwallet"
+	"github.com/blocktree/openwallet/v2/openwallet"
 )
 
 func init() {
