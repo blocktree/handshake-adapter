@@ -14,7 +14,6 @@ require (
 	github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
 	github.com/graarh/golang-socketio v0.0.0-20170510162725-2c44953b9b5f
 	github.com/imroc/req v0.2.4
-	github.com/marwan-at-work/mod v0.2.2 // indirect
 	github.com/shopspring/decimal v0.0.0-20200105231215-408a2507e114
 	github.com/tidwall/gjson v1.3.5
 )
