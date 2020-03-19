@@ -53,6 +53,11 @@ func (sub *subscriberSingle) BlockExtractDataNotify(sourceKey string, data *open
 	return nil
 }
 
+
+func (sub *subscriberSingle) BlockExtractSmartContractDataNotify(sourceKey string, data *openwallet.SmartContractReceipt) error {
+	return nil
+}
+
 func TestSubscribeAddress_HNS(t *testing.T) {
 
 	var (
