@@ -611,6 +611,12 @@ func (bs *HNSBlockScanner) ExtractTransaction(blockHeight uint64, blockHash stri
 //ExtractTransactionData 提取交易单
 func (bs *HNSBlockScanner) extractTransaction(trx *Transaction, result *ExtractResult, scanAddressFunc openwallet.BlockScanAddressFunc) {
 
+	testaddr, testin := scanAddressFunc("hs1qqseet76e8v0met8lgcvznwurlycdukqtdkx6fg")
+	if testin {
+		fmt.Println("hns扫描地址列表包含 : ", testaddr)
+	} else {
+		fmt.Println("地址不包含地址 hs1qqseet76e8v0met8lgcvznwurlycdukqtdkx6fg")
+	}
 	var (
 		success = true
 		txType  = uint64(0)
