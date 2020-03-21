@@ -611,21 +611,11 @@ func (bs *HNSBlockScanner) ExtractTransaction(blockHeight uint64, blockHash stri
 //ExtractTransactionData 提取交易单
 func (bs *HNSBlockScanner) extractTransaction(trx *Transaction, result *ExtractResult, scanAddressFunc openwallet.BlockScanAddressFunc) {
 
-	testaddr, testin := scanAddressFunc("hs1qqseet76e8v0met8lgcvznwurlycdukqtdkx6fg")
-	if testin {
-		fmt.Println("hns扫描地址列表包含 : ", testaddr)
-	} else {
-		fmt.Println("地址不包含地址 hs1qqseet76e8v0met8lgcvznwurlycdukqtdkx6fg")
-	}
 	var (
 		success = true
 		txType  = uint64(0)
 	)
-
-	//if result.IsOmniTransfer {
-	//	txType = 1
-	//}
-
+	
 	if trx == nil {
 		//记录哪个区块哪个交易单没有完成扫描
 		success = false
@@ -868,7 +858,6 @@ func (bs *HNSBlockScanner) newExtractDataNotify(height uint64, extractData map[s
 
 	for o, _ := range bs.Observers {
 		for key, data := range extractData {
-			fmt.Println("推送hns交易，id - ", data.Transaction.TxID)
 			err := o.BlockExtractDataNotify(key, data)
 			if err != nil {
 				bs.wm.Log.Error("BlockExtractDataNotify unexpected error:", err)
