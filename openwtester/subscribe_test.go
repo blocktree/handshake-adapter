@@ -64,20 +64,29 @@ func TestSubscribeAddress_HNS(t *testing.T) {
 		endRunning = make(chan bool, 1)
 		symbol     = "HNS"
 		addrs      = map[string]string{
-			"hs1q90zxakwlghfmj39g2af20h7eh8ygqsv6p44g9j": "sender",
-			"hs1qkvpfvra3vvj4uw4ls4d6h4ra58vpnwu9hpr9lt": "reciver",
-			"hs1qqt5y73p5ahvfne4e428lkn8gtuppvfpa6974t6": "reciver",
+			"hs1qqseet76e8v0met8lgcvznwurlycdukqtdkx6fg": "sender",
+			//"hs1qkvpfvra3vvj4uw4ls4d6h4ra58vpnwu9hpr9lt": "reciver",
+			//"hs1qqt5y73p5ahvfne4e428lkn8gtuppvfpa6974t6": "reciver",
 		}
+
 	)
 
-	//GetSourceKeyByAddress 获取地址对应的数据源标识
-	scanAddressFunc := func(address string) (string, bool) {
-		key, ok := addrs[address]
-		if !ok {
-			return "", false
-		}
-		return key, true
+	var scanAddressFunc openwallet.BlockScanTargetFunc
+	scanAddressFunc = func (target openwallet.ScanTarget) (string, bool) {
+			key, ok := addrs[target.Address]
+			if !ok {
+				return "", false
+			}
+			return key, true
 	}
+	//GetSourceKeyByAddress 获取地址对应的数据源标识
+	//scanAddressFunc := func(address string) (string, bool) {
+	//	key, ok := addrs[address]
+	//	if !ok {
+	//		return "", false
+	//	}
+	//	return key, true
+	//}
 
 	assetsMgr, err := openw.GetAssetsAdapter(symbol)
 	if err != nil {
@@ -113,8 +122,9 @@ func TestSubscribeAddress_HNS(t *testing.T) {
 		scanner.SetBlockchainDAI(dai)
 	}
 
-	scanner.SetRescanBlockHeight(6225)
-	scanner.SetBlockScanAddressFunc(scanAddressFunc)
+	scanner.SetRescanBlockHeight(7091)
+	//scanner.SetBlockScanAddressFunc(scanAddressFunc)
+	scanner.SetBlockScanTargetFunc(scanAddressFunc)
 
 	sub := subscriberSingle{}
 	scanner.AddObserver(&sub)
