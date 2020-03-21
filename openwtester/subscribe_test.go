@@ -71,13 +71,21 @@ func TestSubscribeAddress_HNS(t *testing.T) {
 
 	)
 
-	var scanAddressFunc openwallet.BlockScanTargetFunc
-	scanAddressFunc = func (target openwallet.ScanTarget) (string, bool) {
-			key, ok := addrs[target.Address]
+	var scanAddressFunc openwallet.BlockScanTargetFuncV2
+	scanAddressFunc = func (target openwallet.ScanTargetParam) openwallet.ScanTargetResult {
+			key, ok := addrs[target.ScanTarget]
 			if !ok {
-				return "", false
+				return openwallet.ScanTargetResult{
+					SourceKey:  key,
+					Exist:      false,
+					TargetInfo: nil,
+				}
 			}
-			return key, true
+			return openwallet.ScanTargetResult{
+				SourceKey:  key,
+				Exist:      true,
+				TargetInfo: nil,
+			}
 	}
 	//GetSourceKeyByAddress 获取地址对应的数据源标识
 	//scanAddressFunc := func(address string) (string, bool) {
@@ -124,7 +132,7 @@ func TestSubscribeAddress_HNS(t *testing.T) {
 
 	scanner.SetRescanBlockHeight(7091)
 	//scanner.SetBlockScanAddressFunc(scanAddressFunc)
-	scanner.SetBlockScanTargetFunc(scanAddressFunc)
+	scanner.SetBlockScanTargetFuncV2(scanAddressFunc)
 
 	sub := subscriberSingle{}
 	scanner.AddObserver(&sub)
