@@ -862,6 +862,7 @@ func (bs *HNSBlockScanner) newExtractDataNotify(height uint64, extractData map[s
 
 	for o, _ := range bs.Observers {
 		for key, data := range extractData {
+			fmt.Println("推送hns交易，id - ", data.Transaction.TxID)
 			err := o.BlockExtractDataNotify(key, data)
 			if err != nil {
 				bs.wm.Log.Error("BlockExtractDataNotify unexpected error:", err)
