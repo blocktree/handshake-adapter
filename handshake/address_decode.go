@@ -25,53 +25,75 @@ func init() {
 
 }
 
-type AddressDecoder interface {
-	openwallet.AddressDecoder
-	ScriptPubKeyToBech32Address(scriptPubKey []byte) (string, error)
-}
+type AddressDecoderV2 struct {
 
-type addressDecoder struct {
-	wm *WalletManager //钱包管理者
+	openwallet.AddressDecoderV2Base
+	//ScriptPubKeyToBech32Address(scriptPubKey []byte) (string, error)
 }
 
 //NewAddressDecoder 地址解析器
-func NewAddressDecoder(wm *WalletManager) *addressDecoder {
-	decoder := addressDecoder{}
-	decoder.wm = wm
+func NewAddressDecoderV2(wm *WalletManager) *AddressDecoderV2 {
+	decoder := AddressDecoderV2{}
 	return &decoder
 }
 
-//PrivateKeyToWIF 私钥转WIF
-func (decoder *addressDecoder) PrivateKeyToWIF(priv []byte, isTestnet bool) (string, error) {
-	return "", nil
+
+//AddressDecode 地址解析
+func (dec *AddressDecoderV2) AddressDecode(addr string, opts ...interface{}) ([]byte, error) {
+	decodeHash, err := handshakeTransaction.AddressDecode(addr)
+	if err != nil {
+		return nil, err
+	}
+	return decodeHash, nil
 }
 
-//PublicKeyToAddress 公钥转地址
-func (decoder *addressDecoder) PublicKeyToAddress(pub []byte, isTestnet bool) (string, error) {
+//AddressEncode 地址编码
+func (dec *AddressDecoderV2) AddressEncode(hash []byte, opts ...interface{}) (string, error) {
 
-	pkHash := owcrypt.Hash(pub, 20, owcrypt.HASH_ALG_BLAKE2B)
+	//公钥hash处理
+	hash = owcrypt.Hash(hash, 20, owcrypt.HASH_ALG_BLAKE2B)
 
-	address := handshakeTransaction.AddressEncode(pkHash)
+	address := handshakeTransaction.AddressEncode(hash)
 
 	return address, nil
 }
 
-//RedeemScriptToAddress 多重签名赎回脚本转地址
-func (decoder *addressDecoder) RedeemScriptToAddress(pubs [][]byte, required uint64, isTestnet bool) (string, error) {
-	return "", nil
+// AddressVerify 地址校验
+func (dec *AddressDecoderV2) AddressVerify(address string, opts ...interface{}) bool {
+	_, err := handshakeTransaction.AddressDecode(address)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
-//WIFToPrivateKey WIF转私钥
-func (decoder *addressDecoder) WIFToPrivateKey(wif string, isTestnet bool) ([]byte, error) {
-	return nil, nil
-}
 
-//ScriptPubKeyToBech32Address scriptPubKey转Bech32地址
-func (decoder *addressDecoder) ScriptPubKeyToBech32Address(scriptPubKey []byte) (string, error) {
-	return "", nil
-}
 
-//ScriptPubKeyToBech32Address scriptPubKey转Bech32地址
-func scriptPubKeyToBech32Address(scriptPubKey []byte, isTestNet bool) (string, error) {
-	return "", nil
-}
+
+//
+////PrivateKeyToWIF 私钥转WIF
+//func (decoder *addressDecoder) PrivateKeyToWIF(priv []byte, isTestnet bool) (string, error) {
+//	return "", nil
+//}
+//
+////PublicKeyToAddress 公钥转地址
+//func (decoder *addressDecoder) PublicKeyToAddress(pub []byte, isTestnet bool) (string, error) {
+//
+//	pkHash := owcrypt.Hash(pub, 20, owcrypt.HASH_ALG_BLAKE2B)
+//
+//	address := handshakeTransaction.AddressEncode(pkHash)
+//
+//	return address, nil
+//}
+//
+////RedeemScriptToAddress 多重签名赎回脚本转地址
+//func (decoder *addressDecoder) RedeemScriptToAddress(pubs [][]byte, required uint64, isTestnet bool) (string, error) {
+//	return "", nil
+//}
+//
+////WIFToPrivateKey WIF转私钥
+//func (decoder *addressDecoder) WIFToPrivateKey(wif string, isTestnet bool) ([]byte, error) {
+//	return nil, nil
+//}
+//
+//

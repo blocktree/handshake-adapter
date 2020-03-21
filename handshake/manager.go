@@ -53,7 +53,7 @@ type WalletManager struct {
 	Config          *WalletConfig                 //钱包管理配置
 	WalletsInSum    map[string]*openwallet.Wallet //参与汇总的钱包
 	Blockscanner    *HNSBlockScanner              //区块扫描器
-	Decoder         AddressDecoder                //地址编码器
+	Decoder         *AddressDecoderV2                //地址编码器
 	TxDecoder       openwallet.TransactionDecoder //交易单编码器
 	Log             *log.OWLogger                 //日志工具
 	ContractDecoder *ContractDecoder              //智能合约解析器
@@ -68,7 +68,7 @@ func NewWalletManager() *WalletManager {
 	wm.WalletsInSum = make(map[string]*openwallet.Wallet)
 	//区块扫描器
 	wm.Blockscanner = NewHNSBlockScanner(&wm)
-	wm.Decoder = NewAddressDecoder(&wm)
+	wm.Decoder = NewAddressDecoderV2(&wm)
 	wm.TxDecoder = NewTransactionDecoder(&wm)
 	wm.Log = log.NewOWLogger(wm.Symbol())
 	wm.ContractDecoder = NewContractDecoder(&wm)

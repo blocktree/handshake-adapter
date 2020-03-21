@@ -648,3 +648,8 @@ func (wm *WalletManager) GetAssetsLogger() *log.OWLogger {
 func (wm *WalletManager) GetSmartContractDecoder() openwallet.SmartContractDecoder {
 	return nil
 }
+
+//AddressDecode 地址解析器
+func (wm *WalletManager) GetAddressDecoderV2() openwallet.AddressDecoderV2 {
+	return wm.Decoder
+}
