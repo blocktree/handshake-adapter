@@ -16,6 +16,7 @@
 package handshake
 
 import (
+	"fmt"
 	"github.com/blocktree/go-owcrypt"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
 	"github.com/blocktree/openwallet/v2/openwallet"
@@ -68,32 +69,38 @@ func (dec *AddressDecoderV2) AddressVerify(address string, opts ...interface{}) 
 }
 
 
+//PrivateKeyToWIF 私钥转WIF
+func (dec *AddressDecoderV2) PrivateKeyToWIF(priv []byte, isTestnet bool) (string, error) {
+	return "", fmt.Errorf("PrivateKeyToWIF not implement")
+}
 
+//PublicKeyToAddress 公钥转地址
+func (dec *AddressDecoderV2) PublicKeyToAddress(pub []byte, isTestnet bool) (string, error) {
 
-//
-////PrivateKeyToWIF 私钥转WIF
-//func (decoder *addressDecoder) PrivateKeyToWIF(priv []byte, isTestnet bool) (string, error) {
-//	return "", nil
-//}
-//
-////PublicKeyToAddress 公钥转地址
-//func (decoder *addressDecoder) PublicKeyToAddress(pub []byte, isTestnet bool) (string, error) {
-//
-//	pkHash := owcrypt.Hash(pub, 20, owcrypt.HASH_ALG_BLAKE2B)
-//
-//	address := handshakeTransaction.AddressEncode(pkHash)
-//
-//	return address, nil
-//}
-//
-////RedeemScriptToAddress 多重签名赎回脚本转地址
-//func (decoder *addressDecoder) RedeemScriptToAddress(pubs [][]byte, required uint64, isTestnet bool) (string, error) {
-//	return "", nil
-//}
-//
-////WIFToPrivateKey WIF转私钥
-//func (decoder *addressDecoder) WIFToPrivateKey(wif string, isTestnet bool) ([]byte, error) {
-//	return nil, nil
-//}
-//
-//
+	//公钥hash处理
+	hash := owcrypt.Hash(pub, 20, owcrypt.HASH_ALG_BLAKE2B)
+
+	address := handshakeTransaction.AddressEncode(hash)
+
+	return address, nil
+}
+
+//WIFToPrivateKey WIF转私钥
+func (dec *AddressDecoderV2) WIFToPrivateKey(wif string, isTestnet bool) ([]byte, error) {
+	return nil, fmt.Errorf("WIFToPrivateKey not implement")
+}
+
+//RedeemScriptToAddress 多重签名赎回脚本转地址
+func (dec *AddressDecoderV2) RedeemScriptToAddress(pubs [][]byte, required uint64, isTestnet bool) (string, error) {
+	return "", fmt.Errorf("RedeemScriptToAddress not implement")
+}
+
+// CustomCreateAddress 创建账户地址
+func (dec *AddressDecoderV2) CustomCreateAddress(account *openwallet.AssetsAccount, newIndex uint64) (*openwallet.Address, error) {
+	return nil, fmt.Errorf("CreateAddressByAccount not implement")
+}
+
+// SupportCustomCreateAddressFunction 支持创建地址实现
+func (dec *AddressDecoderV2) SupportCustomCreateAddressFunction() bool {
+	return false
+}
