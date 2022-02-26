@@ -733,11 +733,11 @@ func (bs *HNSBlockScanner) extractTxInput(trx *Transaction, result *ExtractResul
 
 		amount := output.Value
 		addr := output.Addr
-		targetResult := scanAddressFunc(openwallet.ScanTargetParam {
-				ScanTarget:     addr,
-				Symbol:         bs.wm.Symbol(),
-				ScanTargetType: openwallet.ScanTargetTypeAccountAddress,
-			})
+		targetResult := scanAddressFunc(openwallet.ScanTargetParam{
+			ScanTarget:     addr,
+			Symbol:         bs.wm.Symbol(),
+			ScanTargetType: openwallet.ScanTargetTypeAccountAddress,
+		})
 		if targetResult.Exist {
 			input := openwallet.TxInput{}
 			input.SourceTxID = txid
@@ -807,7 +807,7 @@ func (bs *HNSBlockScanner) extractTxOutput(trx *Transaction, result *ExtractResu
 		amount := output.Value
 		n := output.N
 		addr := output.Addr
-		targetResult := scanAddressFunc(openwallet.ScanTargetParam {
+		targetResult := scanAddressFunc(openwallet.ScanTargetParam{
 			ScanTarget:     addr,
 			Symbol:         bs.wm.Symbol(),
 			ScanTargetType: openwallet.ScanTargetTypeAccountAddress,

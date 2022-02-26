@@ -17,7 +17,6 @@ package handshake
 
 import (
 	"encoding/hex"
-	"errors"
 	"github.com/blocktree/handshake-adapter/handshakeTransaction"
 	"github.com/blocktree/openwallet/v2/openwallet"
 	"github.com/btcsuite/btcd/txscript"
@@ -585,7 +584,7 @@ func newTxVout(json *gjson.Result) (*Vout, error) {
 	obj.N = gjson.Get(json.Raw, "n").Uint()
 	obj.ScriptPubKey = gjson.Get(json.Raw, "address").Get("hash").String()
 	if gjson.Get(json.Raw, "address").Get("version").Uint() != 0 {
-		return nil, errors.New("unknown address version")
+		return nil, nil
 	}
 
 	hash, _ := hex.DecodeString(obj.ScriptPubKey)
